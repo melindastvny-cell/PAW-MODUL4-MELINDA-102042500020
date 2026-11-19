@@ -101,7 +101,6 @@
             <h1 class="fw-bold">Katalog Koleksi Buku</h1>
             <p class="text-muted">Temukan dan pinjam buku referensi perkuliahan terbaikmu</p>
 
-            {{-- TODO 10: Lengkapi form pencarian, filter status/penerbit, dan sorting di bawah ini --}}
             <div class="row justify-content-center mt-4">
                 <div class="col-lg-11">
                     <form action="{{ url()->current() }}" method="GET" class="card shadow-sm border-0 p-3 bg-light text-start">
@@ -112,8 +111,8 @@
                                     <span class="input-group-text bg-white border-end-0">
                                         <i class="bi bi-search text-muted"></i>
                                     </span>
-                                    <input type="text" name="search" class="form-control border-start-0" 
-                                           placeholder="Cari judul, penulis..." 
+                                    <input type="text" name="search" class="form-control border-start-0"
+                                           placeholder="Cari judul, penulis, penerbit..."
                                            value="{{ request('search') }}">
                                 </div>
                             </div>
@@ -147,15 +146,13 @@
                             <div class="col-md-2">
                                 <select name="sort" class="form-select" onchange="this.form.submit()">
                                     <option value="">Urutkan: Terbaru</option>
-                                    <option value="judul_asc" {{ request('sort') === 'judul_asc' ? 'selected' : '' }}>Judul (A - Z)</option>
-                                    <option value="judul_desc" {{ request('sort') === 'judul_desc' ? 'selected' : '' }}>Judul (Z - A)</option>
-                                    <option value="tahun_desc" {{ request('sort') === 'tahun_desc' ? 'selected' : '' }}>Tahun (Terbaru)</option>
-                                    <option value="tahun_asc" {{ request('sort') === 'tahun_asc' ? 'selected' : '' }}>Tahun (Terlama)</option>
-                                    <option value="stok_desc" {{ request('sort') === 'stok_desc' ? 'selected' : '' }}>Stok Terbanyak</option>
+                                    <option value="judul" {{ request('sort') === 'judul' ? 'selected' : '' }}>Judul (A - Z)</option>
+                                    <option value="tahun" {{ request('sort') === 'tahun' ? 'selected' : '' }}>Tahun Terbit</option>
+                                    <option value="stok" {{ request('sort') === 'stok' ? 'selected' : '' }}>Stok Terbanyak</option>
                                 </select>
                             </div>
 
-                            {{-- Tombol Reset --}}
+                            {{-- Tombol Reset / Terapkan --}}
                             <div class="col-md-1 d-flex">
                                 @if(request('search') || request('penerbit') || request('status') || request('sort'))
                                     <a href="{{ url()->current() }}" class="btn btn-outline-danger w-100" title="Reset Semua Filter">
@@ -174,7 +171,7 @@
 
             @if(request('search') || request('penerbit') || request('status') || request('sort'))
                 <p class="text-muted mt-3 small">
-                    Menampilkan hasil filter: 
+                    Menampilkan hasil filter:
                     @if(request('search')) pencarian <strong>"{{ request('search') }}"</strong>@endif
                     @if(request('penerbit')) &bull; penerbit <strong>"{{ request('penerbit') }}"</strong>@endif
                     @if(request('status')) &bull; status <strong>"{{ request('status') === 'tersedia' ? 'Stok Tersedia' : 'Stok Habis' }}"</strong>@endif
@@ -219,7 +216,7 @@
             <div class="col-12 text-center py-5">
                 <i class="bi bi-search fs-1 text-muted d-block mb-3"></i>
                 <p class="text-muted fs-5">Buku tidak ditemukan.</p>
-                @if(request('search'))
+                @if(request('search') || request('penerbit') || request('status') || request('sort'))
                     <a href="{{ route('home') }}" class="btn btn-outline-primary btn-sm">Lihat Semua Buku</a>
                 @endif
             </div>
@@ -243,4 +240,3 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
